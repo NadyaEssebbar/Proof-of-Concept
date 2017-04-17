@@ -6,13 +6,10 @@ import be.kdg.repositories.AvatarRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.util.List;
-import java.util.concurrent.Future;
 
 /**
  * Created by nadya on 31/03/2017.
@@ -31,11 +27,15 @@ import java.util.concurrent.Future;
 public class AvatarServiceImpl implements AvatarService
 {
 
-    @Autowired
-    private AvatarRepository avatarRepository;
+    private final AvatarRepository avatarRepository;
+
+   private final  DiscoveryClient discoveryClient;
 
     @Autowired
-    DiscoveryClient discoveryClient;
+    public AvatarServiceImpl(AvatarRepository avatarRepository, DiscoveryClient discoveryClient) {
+        this.avatarRepository = avatarRepository;
+        this.discoveryClient = discoveryClient;
+    }
 
 
     @Override
@@ -45,7 +45,7 @@ public class AvatarServiceImpl implements AvatarService
         InputStream in = new ByteArrayInputStream(a.getImage().getData());
         BufferedImage bImageFromConvert = ImageIO.read(in);
 
-        String locationToStoreImage= "C:\\Users\\nadya\\Desktop\\jaar 4\\paper\\Poc_Synchroon\\avatarService\\src\\main\\resources\\static\\images\\" + a.getName() + "Image.jpg";
+        String locationToStoreImage= "C:\\Users\\nadya\\Desktop\\jaar 4\\paper\\Proof of Concept\\synchroon\\avatarService\\src\\main\\resources\\static\\images\\" + a.getName() + "Image.jpg";
 
 
         ImageIO.write(bImageFromConvert, "jpg",new File(locationToStoreImage));
@@ -133,7 +133,7 @@ public class AvatarServiceImpl implements AvatarService
     @Override
     public void dropCollection() {
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase db = mongoClient.getDatabase("avatarServiceDBSynchroon");
+        MongoDatabase db = mongoClient.getDatabase("avatarService_RequestResponse");
         MongoCollection col = db.getCollection("avatars");
 
         if (col.count() > 0) {

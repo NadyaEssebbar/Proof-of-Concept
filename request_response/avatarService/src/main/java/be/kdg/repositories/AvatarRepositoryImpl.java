@@ -12,13 +12,20 @@ import java.util.ArrayList;
 /**
  * Created by nadya on 5/02/2017.
  */
+
 public class AvatarRepositoryImpl implements AvatarRepositoryCustom
 {
-    @Autowired
+    private final
     MongoTemplate mongoTemplate;
 
-    @Autowired
+    private final
     MongoOperations mongoOperations;
+
+    @Autowired
+    public AvatarRepositoryImpl(MongoTemplate mongoTemplate, MongoOperations mongoOperations) {
+        this.mongoTemplate = mongoTemplate;
+        this.mongoOperations = mongoOperations;
+    }
 
     @Override
     public Avatar getAvatarOfUser(Long userId) {

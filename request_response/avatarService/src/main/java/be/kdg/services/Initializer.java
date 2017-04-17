@@ -24,7 +24,7 @@ public class Initializer
     public void initialize() throws IOException
     {
         avatarService.dropCollection();
-        String imageFile = "C:\\Users\\nadya\\Desktop\\jaar 4\\paper\\Poc_Synchroon\\avatarService\\src\\main\\resources\\static\\images\\avatar_icon.jpg";
+        String imageFile = "C:\\Users\\nadya\\Desktop\\jaar 4\\paper\\Proof of Concept\\synchroon\\avatarService\\src\\main\\resources\\static\\images\\avatar_icon.jpg";
 
         avatarService.addAvatar(new AvatarDTO(1,"test",imageFile,1L));
 
