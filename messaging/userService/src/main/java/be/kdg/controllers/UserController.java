@@ -35,6 +35,7 @@ public class UserController
     public List<User> getUsers() {
         return userService.findUsers();
     }
+
     @RequestMapping("/users/{id}")
     public User getUser(@PathVariable long id) {
         return userService.findUserById(id);
